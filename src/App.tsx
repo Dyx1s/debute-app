@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Container } from '@mui/material';
+import SignUp from './components/SignUp';
+import GetCode from './components/GetCode';
+import EncodeToken from './components/EnCodeToken';
+import SetStatus from './components/SetStatus';
 
-function App() {
+const App: React.FC = () => {
+  const [code, setCode] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+
+
+  const handleCodeReceived = (receivedCode: string) => {
+    setCode(receivedCode);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <SignUp />
+      <GetCode onCodeReceived={handleCodeReceived} />
+      {code && <EncodeToken code={code} onTokenGenerated={setToken} />}
+      {token && <SetStatus token={token} />}
+    </Container>
   );
-}
+};
 
 export default App;
